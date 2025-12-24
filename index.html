@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Navidad, Ivonne</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --color-papel: #f9f4e8;
+    --rojo: #a62121;
+    --dorado: #b8860b;
+    --verde-muerdago: #2d5a27;
+}
+
+body {
+    margin: 0;
+    min-height: 180vh;
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    background-color: #d1d1d1;
+}
+
+/* Pantalla de Inicio (Para activar música) */
+#pantalla-apertura {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, #a62121, #4a0000);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: opacity 1s ease;
+}
+
+#btn-abrir {
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-family: 'Great Vibes', cursive;
+    background: var(--dorado);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(184, 134, 11, 0.6);
+    animation: latido 2s infinite;
+}
+
+/* CIELO DINÁMICO */
+#cielo {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, #A5DEE5, #E0F7FA);
+    z-index: -10;
+    transition: background 1.5s ease;
+}
+
+.astro {
+    position: fixed;
+    top: 60px;
+    left: 70px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff9e6 0%, #FFD700 70%);
+    box-shadow: 0 0 80px rgba(255, 215, 0, 0.5);
+    z-index: -5;
+    transition: all 1.5s ease;
+}
+
+/* PANDAS */
+.panda-container {
+    position: fixed;
+    bottom: 20px;
+    width: 200px;
+    height: 250px;
+    animation: balanceo 4s ease-in-out infinite;
+    z-index: 5;
+}
+.panda-izq { left: 2%; }
+.panda-der { right: 2%; transform: scaleX(-1); }
+
+/* LA HOJA */
+.contenedor-carta {
+    display: flex;
+    justify-content: center;
+    padding: 80px 20px;
+}
+
+.hoja-papel {
+    width: 90%;
+    max-width: 650px;
+    background-color: var(--color-papel);
+    padding: 60px;
+    position: relative;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.05), 5px 5px 15px rgba(0,0,0,0.1), 15px 15px 35px rgba(0,0,0,0.2); 
+    border-radius: 2px;
+    background-image: url("https://www.transparenttextures.com/patterns/old-paper.png");
+}
+
+.marco-interno {
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    padding: 40px;
+    position: relative;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4.5rem;
+    color: var(--rojo);
+    margin: 0;
+    animation: brillo 3s infinite ease-in-out;
+}
+
+/* ADORNOS LADO DEL NOMBRE */
+.muerdago-lujo {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hoja-acebo {
+    position: absolute;
+    width: 30px;
+    height: 18px;
+    background: linear-gradient(135deg, #2d5a27, #1a3317);
+    border-radius: 70% 10% 70% 10%;
+}
+.h1 { transform: rotate(-30deg) translate(-10px, -8px); }
+.h2 { transform: rotate(50deg) translate(10px, -8px); }
+.h3 { transform: rotate(190deg) translate(0px, 10px); }
+
+.baya-lujo {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle at 30% 30%, #ff4d4d, #a62121 80%);
+    border-radius: 50%;
+    z-index: 5;
+}
+.b1 { transform: translate(-4px, -2px); }
+.b2 { transform: translate(4px, -2px); }
+.b3 { transform: translate(0px, 4px); }
+
+.lazo-seda {
+    position: absolute;
+    bottom: 5px;
+    width: 20px;
+    height: 8px;
+    background: var(--dorado);
+    z-index: 6;
+    border-radius: 2px;
+}
+
+.frase-principal {
+    font-style: italic;
+    font-size: 1.5rem;
+    color: #444;
+    text-align: center;
+    margin: 20px 0 40px 0;
+    border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+    padding-bottom: 20px;
+}
+
+.poema {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c2c2c;
+}
+
+.firma {
+    margin-top: 50px;
+    text-align: right;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--rojo);
+}
+
+@keyframes balanceo {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+@keyframes latido {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes brillo {
+    0%, 100% { text-shadow: 0 0 0px transparent; }
+    50% { text-shadow: 0 0 15px rgba(184, 134, 11, 0.4); }
+}
+
+.nevada { position: fixed; inset: 0; pointer-events: none; z-index: 10; }
+.copo { position: absolute; background: white; border-radius: 50%; opacity: 0.8; animation: caer linear infinite; }
+@keyframes caer {
+    0% { transform: translateY(-10vh) translateX(0); }
+    100% { transform: translateY(110vh) translateX(25px); }
+}
+.estrellas { position: fixed; inset: 0; opacity: 0; z-index: -8; transition: opacity 1.2s; }
+.estrella { position: absolute; background: white; border-radius: 50%; }
+
+.navidad-item { opacity: 0; transform: translateY(-20px); transition: all 1s ease; }
+.navidad-activa .navidad-item { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body id="body">
+
+<div id="pantalla-apertura">
+    <h2 style="font-family: 'Great Vibes', cursive; font-size: 3rem; margin-bottom: 20px;">Para: Ivonne</h2>
+    <button id="btn-abrir">Abrir Regalo 🎁</button>
+</div>
+
+<audio id="musica" loop>
+    <source src="Idea 22.mp3" type="audio/mpeg">
+</audio>
+
+<div id="cielo"></div>
+<div class="astro" id="astro"></div>
+<div class="nevada" id="nevada"></div>
+<div class="estrellas" id="estrellas"></div>
+
+<template id="panda-template">
+<svg viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="65" cy="85" r="18" fill="#222"/>
+    <circle cx="135" cy="85" r="18" fill="#222"/>
+    <circle cx="70" cy="215" r="22" fill="#222"/>
+    <circle cx="130" cy="215" r="22" fill="#222"/>
+    <ellipse cx="100" cy="180" rx="48" ry="50" fill="white" stroke="#222" stroke-width="1"/>
+    <circle cx="100" cy="120" r="45" fill="white" stroke="#222" stroke-width="1"/>
+    <ellipse cx="82" cy="125" rx="12" ry="15" fill="#222" transform="rotate(10 82 125)"/>
+    <ellipse cx="118" cy="125" rx="12" ry="15" fill="#222" transform="rotate(-10 118 125)"/>
+    <circle cx="82" cy="123" r="4" fill="white"/>
+    <circle cx="118" cy="123" r="4" fill="white"/>
+    <path d="M96,135 Q100,139 104,135" fill="none" stroke="#222" stroke-width="2"/>
+    <g class="navidad-item">
+        <rect x="70" y="165" width="60" height="50" rx="4" fill="#c41e3a" />
+        <rect x="95" y="165" width="10" height="50" fill="#ffd700"/>
+        <rect x="70" y="185" width="60" height="8" fill="#ffd700"/>
+    </g>
+    <path d="M60 175 Q75 210 95 205" fill="none" stroke="#222" stroke-width="14" stroke-linecap="round"/>
+    <path d="M140 175 Q125 210 105 205" fill="none" stroke="#222" stroke-width="14" stroke-linecap="round"/>
+    <g class="navidad-item">
+        <path d="M60,85 L100,25 L140,85 Z" fill="#c41e3a"/>
+        <rect x="55" y="80" width="90" height="14" rx="7" fill="white"/>
+        <circle cx="100" cy="25" r="9" fill="white"/>
+    </g>
+</svg>
+</template>
+
+<div class="panda-container panda-izq" id="p1"></div>
+<div class="panda-container panda-der" id="p2"></div>
+
+<div class="contenedor-carta">
+    <main class="hoja-papel">
+        <div class="marco-interno">
+            <header>
+                <div class="muerdago-lujo">
+                    <div class="hoja-acebo h1"></div><div class="hoja-acebo h2"></div><div class="hoja-acebo h3"></div>
+                    <div class="baya-lujo b1"></div><div class="baya-lujo b2"></div><div class="baya-lujo b3"></div>
+                    <div class="lazo-seda"></div>
+                </div>
+                <h1>Ivonne</h1>
+                <div class="muerdago-lujo">
+                    <div class="hoja-acebo h1"></div><div class="hoja-acebo h2"></div><div class="hoja-acebo h3"></div>
+                    <div class="baya-lujo b1"></div><div class="baya-lujo b2"></div><div class="baya-lujo b3"></div>
+                    <div class="lazo-seda"></div>
+                </div>
+            </header>
+
+            <p class="frase-principal">“Escribirte palabras bonitas es mi pasión, porque sé que te sacan una sonrisa.”</p>
+
+            <section>
+                <div class="poema">“Ivonne, el mundo tiene sus maravillas;<br>pero tú eres la maravilla de mi mundo”</div>
+                <div class="poema">"Eres ese pensamiento que, por más ocupado que esté,<br>siempre vive en mi mente."</div>
+                <div class="poema">“Eres como el atardecer que contemplo con calma<br>y no quiero perder.”</div>
+                <div class="poema">"Tus ojos guían mis noches,<br>tu sonrisa ilumina mis días."</div>
+                <div class="poema">"Incluso en un museo lleno de arte,<br>yo te miraría a ti."</div>
+                <div class="poema">"Conocerte fue un regalo que esta vida decidió darme."</div>
+                
+                <div style="text-align:center; font-weight:bold; color:var(--rojo); margin-top:40px; font-size: 2.2rem; font-family: 'Great Vibes', cursive;">
+                    ¡Feliz Navidad! ❤️🎄
+                </div>
+            </section>
+
+            <footer class="firma">Con mucho cariño...</footer>
+        </div>
+    </main>
+</div>
+
+<script>
+const btn = document.getElementById('btn-abrir');
+const musica = document.getElementById('musica');
+const pantalla = document.getElementById('pantalla-apertura');
+
+btn.addEventListener('click', () => {
+    musica.play(); // ¡Aquí suena luego luego!
+    pantalla.style.opacity = '0';
+    setTimeout(() => {
+        pantalla.style.display = 'none';
+    }, 1000);
+});
+
+// Lógica de pandas y nieve
+const tpl = document.getElementById('panda-template').innerHTML;
+document.getElementById('p1').innerHTML = tpl;
+document.getElementById('p2').innerHTML = tpl;
+
+const nevada = document.getElementById('nevada');
+for(let i=0; i<100; i++){
+    const c = document.createElement('div');
+    c.className = 'copo';
+    c.style.width = c.style.height = Math.random() * 4 + 2 + 'px';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.animationDuration = 5 + Math.random() * 5 + 's';
+    nevada.appendChild(c);
+}
+
+const estrellasCont = document.getElementById('estrellas');
+for(let i=0; i<80; i++){
+    const s = document.createElement('div');
+    s.className = 'estrella';
+    s.style.width = s.style.height = Math.random() * 2 + 'px';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.left = Math.random() * 100 + '%';
+    estrellasCont.appendChild(s);
+}
+
+window.addEventListener('scroll', () => {
+    const ratio = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    const cielo = document.getElementById('cielo');
+    const astro = document.getElementById('astro');
+    if(ratio > 0.4){
+        cielo.style.background = "linear-gradient(to bottom, #0f0c29, #302b63, #24243e)";
+        astro.style.background = "#fff";
+        estrellasCont.style.opacity = 1;
+        document.getElementById('body').classList.add('navidad-activa');
+    } else {
+        cielo.style.background = "linear-gradient(to bottom, #A5DEE5, #E0F7FA)";
+        astro.style.background = "radial-gradient(circle, #fff9e6 0%, #FFD700 70%)";
+        estrellasCont.style.opacity = 0;
+        document.getElementById('body').classList.remove('navidad-activa');
+    }
+});
+</script>
+</body>
+</html>
